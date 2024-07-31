@@ -12,7 +12,7 @@ public class Othello extends Application {
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(Othello.class.getResource("othello.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 900, 900);
-        stage.setTitle("Otello!");
+        stage.setTitle("Othello!");
         stage.setScene(scene);
         stage.show();
     }
