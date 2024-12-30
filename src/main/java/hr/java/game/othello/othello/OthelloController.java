@@ -1,11 +1,15 @@
 package hr.java.game.othello.othello;
 
 import hr.java.game.othello.othello.enums.ButtonStyleEnum;
+import hr.java.game.othello.othello.model.BoardState;
 import hr.java.game.othello.othello.util.GameBoardUtils;
 import hr.java.game.othello.othello.util.GameRules;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+
+import static hr.java.game.othello.othello.model.BoardState.NUMBER_OF_COLUMNS;
+import static hr.java.game.othello.othello.model.BoardState.NUMBER_OF_ROWS;
 
 public class OthelloController {
     @FXML
@@ -139,8 +143,6 @@ public class OthelloController {
 
     public static ButtonStyleEnum currentPlayerColor;
     public static Button[][] board;
-    public static final int NUMBER_OF_ROWS = 8;
-    public static final int NUMBER_OF_COLUMNS = 8;
 
     public void initialize() {
         currentPlayerColor = ButtonStyleEnum.BLACK;
@@ -231,8 +233,16 @@ public class OthelloController {
         }
     }
 
-    public void newGame(Event event) {
+    public void newGame() {
         GameBoardUtils.startNewGame(board);
         currentPlayerColor = ButtonStyleEnum.BLACK;
+    }
+
+    public void saveGame() {
+        GameBoardUtils.saveGame(board, currentPlayerColor);
+    }
+
+    public void loadGame() {
+        currentPlayerColor = GameBoardUtils.loadGame(board);
     }
 }
