@@ -142,9 +142,9 @@
                         <MenuItem mnemonicParsing="false" onAction="#loadGame" text="Load Game" />
                   </items>
                 </Menu>
-                <Menu mnemonicParsing="false" text="Edit">
+                <Menu mnemonicParsing="false" text="Documentation">
                   <items>
-                    <MenuItem mnemonicParsing="false" text="Delete" />
+                    <MenuItem mnemonicParsing="false" onAction="#generateDocumentation" text="Generate Documentation" />
                   </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="Help">

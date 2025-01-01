@@ -2,6 +2,7 @@ package hr.java.game.othello.othello;
 
 import hr.java.game.othello.othello.enums.ButtonStyleEnum;
 import hr.java.game.othello.othello.model.BoardState;
+import hr.java.game.othello.othello.util.DocumentationUtil;
 import hr.java.game.othello.othello.util.GameBoardUtils;
 import hr.java.game.othello.othello.util.GameRules;
 import javafx.event.Event;
@@ -244,5 +245,9 @@ public class OthelloController {
 
     public void loadGame() {
         currentPlayerColor = GameBoardUtils.loadGame(board);
+    }
+
+    public void generateDocumentation() {
+        DocumentationUtil.generateDocumentation();
     }
 }
