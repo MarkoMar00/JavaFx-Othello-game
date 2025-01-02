@@ -44,6 +44,7 @@ public class DocumentationUtil {
 
                 Field[] classVariables = documentationClass.getFields();
                 for(Field field : classVariables) {
+                    field.setAccessible(true);
                     String modifiers = Modifier.toString(field.getModifiers());
                     documentationGenerator.append("<h4>"
                             + modifiers + " "
@@ -56,6 +57,7 @@ public class DocumentationUtil {
 
                 Constructor[] classConstructors = documentationClass.getConstructors();
                 for(Constructor constructor : classConstructors) {
+                    constructor.setAccessible(true);
                     String modifiers = Modifier.toString(constructor.getModifiers());
                     documentationGenerator.append("<h4>"
                     + modifiers + " "
@@ -67,6 +69,7 @@ public class DocumentationUtil {
 
                 Method[] classMethods = documentationClass.getDeclaredMethods();
                 for (Method method : classMethods) {
+                    method.setAccessible(true);
                     String modifiers = Modifier.toString(method.getModifiers());
                     documentationGenerator.append("<h4>"
                     + modifiers + " "
