@@ -61,25 +61,7 @@ public class GameBoardUtils {
             BoardState boardState = new BoardState();
             boardState.setBoardState(new String[NUMBER_OF_ROWS][NUMBER_OF_COLUMNS]);
 
-            for (int row = 0; row < NUMBER_OF_ROWS; row++) {
-                for (int col = 0; col < NUMBER_OF_COLUMNS; col++) {
-                    boardState.getBoardState()[row][col] = board[row][col].getStyle();
-                }
-            }
-
-            if (currentPlayerColor.equals(ButtonStyleEnum.BLACK)) {
-                boardState.setCurrentPlayer(ButtonStyleEnum.WHITE);
-            } else if (currentPlayerColor.equals(ButtonStyleEnum.WHITE)) {
-                boardState.setCurrentPlayer(ButtonStyleEnum.BLACK);
-            }
-
-            if (Othello.player.name().equals(Player.WHITE_PLAYER.name())) {
-                MultiplayerGameUtil.whitePlayerSendRequest(boardState);
-            } else if (Othello.player.name().equals(Player.BLACK_PLAYER.name())) {
-                MultiplayerGameUtil.blackPlayerSendRequest(boardState);
-            }
-
-            MultiplayerGameUtil.deactivateButtons(true);
+            updateGameBoard(boardState);
 
             for (int row = 0; row < NUMBER_OF_ROWS; row++){
                 for (int col = 0; col < NUMBER_OF_COLUMNS; col++){
@@ -88,12 +70,33 @@ public class GameBoardUtils {
                             GameRules.flipPieces(currentPlayerColor, row, col, board);
                             board[row][col].setStyle(currentPlayerColor.getStyle());
                             GameRules.isGameOver(board);
-                            currentPlayerColor = (currentPlayerColor.getStyle().contains(ButtonStyleEnum.WHITE.getColor()))
-                                    ? ButtonStyleEnum.BLACK : ButtonStyleEnum.WHITE;
                         }
                     }
                 }
             }
+            updateGameBoard(boardState);
+
+            if (Othello.player.name().equals(Player.WHITE_PLAYER.name())) {
+                MultiplayerGameUtil.whitePlayerSendRequest(boardState);
+            } else if (Othello.player.name().equals(Player.BLACK_PLAYER.name())) {
+                MultiplayerGameUtil.blackPlayerSendRequest(boardState);
+            }
+
+            MultiplayerGameUtil.deactivateButtons(true);
+        }
+    }
+
+    private static void updateGameBoard(BoardState boardState) {
+        for (int row = 0; row < NUMBER_OF_ROWS; row++) {
+            for (int col = 0; col < NUMBER_OF_COLUMNS; col++) {
+                boardState.getBoardState()[row][col] = board[row][col].getStyle();
+            }
+        }
+
+        if (currentPlayerColor.equals(ButtonStyleEnum.BLACK)) {
+            boardState.setCurrentPlayer(ButtonStyleEnum.WHITE);
+        } else if (currentPlayerColor.equals(ButtonStyleEnum.WHITE)) {
+            boardState.setCurrentPlayer(ButtonStyleEnum.BLACK);
         }
     }
 }
