@@ -70,6 +70,10 @@ public class GameBoardUtils {
                             GameRules.flipPieces(currentPlayerColor, row, col, board);
                             board[row][col].setStyle(currentPlayerColor.getStyle());
                             GameRules.isGameOver(board);
+                            if (Othello.player.name().equals(Player.SINGLE_PLAYER.name())) {
+                                currentPlayerColor = (currentPlayerColor.getStyle().contains(ButtonStyleEnum.WHITE.getColor()))
+                                        ? ButtonStyleEnum.BLACK : ButtonStyleEnum.WHITE;
+                            }
                         }
                     }
                 }

@@ -1,7 +1,6 @@
 package hr.java.game.othello.othello.model;
 
 import hr.java.game.othello.othello.enums.ButtonStyleEnum;
-import hr.java.game.othello.othello.util.DialogUtils;
 import javafx.scene.control.Button;
 import lombok.AllArgsConstructor;
 import lombok.Data;
