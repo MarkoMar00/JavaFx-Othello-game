@@ -1,8 +1,9 @@
 package hr.java.game.othello.othello.thread;
 
-import hr.java.game.othello.othello.Othello;
 import hr.java.game.othello.othello.OthelloController;
+import hr.java.game.othello.othello.jndi.ConfigurationReader;
 import hr.java.game.othello.othello.model.BoardState;
+import hr.java.game.othello.othello.model.ConfigurationKey;
 import hr.java.game.othello.othello.util.DialogUtils;
 import hr.java.game.othello.othello.util.MultiplayerGameUtil;
 import javafx.application.Platform;
@@ -20,7 +21,8 @@ public class BlackPlayerThread implements Runnable {
     }
 
     private static void blackPlayerAcceptRequests() {
-        try (ServerSocket serverSocket = new ServerSocket(Othello.BLACK_PLAYER_SERVER_PORT)){
+        Integer blackPlayerServerPort = Integer.parseInt(ConfigurationReader.getValue(ConfigurationKey.BLACK_PLAYER_SERVER_PORT));
+        try (ServerSocket serverSocket = new ServerSocket(blackPlayerServerPort)){
             System.err.println("Client connected from port: "  + serverSocket.getLocalPort());
 
             while (true) {
@@ -42,8 +44,8 @@ public class BlackPlayerThread implements Runnable {
             OthelloController.currentPlayerColor = boardState.getCurrentPlayer();
             MultiplayerGameUtil.deactivateButtons(false);
 
-            System.out.println("White player received the game state!");
-            oos.writeObject("White player received the game state - confirmation!");
+            System.out.println("Black player received the game state!");
+            oos.writeObject("Black player received the game state - confirmation!");
 
         } catch (IOException | ClassNotFoundException e) {
             DialogUtils.showActionFailure(e.toString());

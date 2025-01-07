@@ -14,10 +14,6 @@ import java.io.IOException;
 
 public class Othello extends Application {
 
-    public static final int WHITE_PLAYER_SERVER_PORT = 1989;
-    public static final int BLACK_PLAYER_SERVER_PORT = 1990;
-    public static final String HOST = "localhost";
-
     public static Stage mainStage;
     public static Player player;
 
@@ -51,7 +47,7 @@ public class Othello extends Application {
             serverStarter.start();
         } else if (Player.valueOf(firstArgument).equals(Player.SINGLE_PLAYER)) {
             player = Player.SINGLE_PLAYER;
-            System.out.println("Single player mode active");
+            System.err.println("Single player mode active");
         } else {
             throw new WrongPlayerException("The game was started with an unexpected player: " + firstArgument);
         }

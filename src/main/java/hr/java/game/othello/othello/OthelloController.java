@@ -1,5 +1,6 @@
 package hr.java.game.othello.othello;
 
+import hr.java.game.othello.othello.chat.ChatService;
 import hr.java.game.othello.othello.enums.ButtonStyleEnum;
 import hr.java.game.othello.othello.util.DocumentationUtil;
 import hr.java.game.othello.othello.util.GameBoardUtils;
@@ -7,7 +8,11 @@ import hr.java.game.othello.othello.util.GameSetup;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import lombok.Getter;
+
+import java.rmi.RemoteException;
 
 @Getter
 public class OthelloController {
@@ -139,13 +144,19 @@ public class OthelloController {
     private Button button76;
     @FXML
     private Button button77;
+    @FXML
+    private TextArea chatTextArea;
+    @FXML
+    private TextField chatMessageTextField;
 
     public static ButtonStyleEnum currentPlayerColor;
     public static Button[][] board;
+    public static ChatService stub;
 
     public void initialize() {
         GameSetup gameSetup = new GameSetup(this);
         gameSetup.initializeBoard();
+        gameSetup.initializeChat(chatTextArea);
     }
 
     public void movePlayed(Event event) {
@@ -167,5 +178,9 @@ public class OthelloController {
 
     public void generateDocumentation() {
         DocumentationUtil.generateDocumentation();
+    }
+
+    public void sendMessage() {
+        GameBoardUtils.sendChatMessage(chatMessageTextField, chatTextArea);
     }
 }

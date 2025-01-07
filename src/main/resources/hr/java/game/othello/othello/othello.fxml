@@ -5,6 +5,8 @@
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -131,6 +133,8 @@
                   <Button fx:id="button72" alignment="CENTER" layoutX="174.0" layoutY="501.0" mnemonicParsing="false" onAction="#movePlayed" prefHeight="64.0" prefWidth="64.0" style="-fx-background-radius: 100; -fx-background-color: bisque;" />
                   <Button fx:id="button71" alignment="CENTER" layoutX="93.0" layoutY="501.0" mnemonicParsing="false" onAction="#movePlayed" prefHeight="64.0" prefWidth="64.0" style="-fx-background-radius: 100; -fx-background-color: bisque;" />
                   <Button fx:id="button70" alignment="CENTER" layoutX="10.0" layoutY="501.0" mnemonicParsing="false" onAction="#movePlayed" prefHeight="64.0" prefWidth="64.0" style="-fx-background-radius: 100; -fx-background-color: bisque;" />
+                  <TextField fx:id="chatMessageTextField" layoutX="-1.0" layoutY="578.0" prefHeight="25.0" prefWidth="495.0" />
+                  <Button layoutX="512.0" layoutY="578.0" mnemonicParsing="false" onAction="#sendMessage" text="Send message" />
                </children>
             </AnchorPane>
             <MenuBar prefHeight="4.0" prefWidth="846.0" GridPane.columnSpan="10">
@@ -154,6 +158,7 @@
                 </Menu>
               </menus>
             </MenuBar>
+            <TextArea fx:id="chatTextArea" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.columnSpan="7" GridPane.rowIndex="12" GridPane.rowSpan="2" />
          </children>
       </GridPane>
    </children>

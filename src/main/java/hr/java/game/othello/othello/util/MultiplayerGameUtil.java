@@ -3,7 +3,9 @@ package hr.java.game.othello.othello.util;
 import hr.java.game.othello.othello.Othello;
 import hr.java.game.othello.othello.OthelloController;
 import hr.java.game.othello.othello.enums.Player;
+import hr.java.game.othello.othello.jndi.ConfigurationReader;
 import hr.java.game.othello.othello.model.BoardState;
+import hr.java.game.othello.othello.model.ConfigurationKey;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -13,7 +15,9 @@ import java.net.Socket;
 public class MultiplayerGameUtil {
 
     public static void whitePlayerSendRequest(BoardState boardState) {
-        try (Socket clientSocket = new Socket(Othello.HOST, Othello.BLACK_PLAYER_SERVER_PORT)) {
+        Integer blackPlayerServerPort = Integer.parseInt(ConfigurationReader.getValue(ConfigurationKey.BLACK_PLAYER_SERVER_PORT));
+        String host = ConfigurationReader.getValue(ConfigurationKey.HOST);
+        try (Socket clientSocket = new Socket(host, blackPlayerServerPort)) {
             System.err.println("Client is connecting to " + clientSocket.getInetAddress() + ":" + clientSocket.getPort());
 
             sendSerializableRequestToBlackPlayer(clientSocket, boardState);
@@ -24,7 +28,9 @@ public class MultiplayerGameUtil {
     }
 
     public static void blackPlayerSendRequest(BoardState boardState) {
-        try (Socket clientSocket = new Socket(Othello.HOST, Othello.WHITE_PLAYER_SERVER_PORT)) {
+        Integer whitePlayerServerPort = Integer.parseInt(ConfigurationReader.getValue(ConfigurationKey.WHITE_PLAYER_SERVER_PORT));
+        String host = ConfigurationReader.getValue(ConfigurationKey.HOST);
+        try (Socket clientSocket = new Socket(host, whitePlayerServerPort)) {
             System.err.println("Client is connecting to " + clientSocket.getInetAddress() + ":" + clientSocket.getPort());
 
             sendSerializableRequestToWhitePlayer(clientSocket, boardState);

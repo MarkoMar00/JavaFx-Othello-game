@@ -6,11 +6,14 @@ import hr.java.game.othello.othello.enums.Player;
 import hr.java.game.othello.othello.model.BoardState;
 import javafx.event.Event;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 
 import java.io.*;
+import java.rmi.RemoteException;
+import java.util.List;
 
-import static hr.java.game.othello.othello.OthelloController.board;
-import static hr.java.game.othello.othello.OthelloController.currentPlayerColor;
+import static hr.java.game.othello.othello.OthelloController.*;
 import static hr.java.game.othello.othello.model.BoardState.NUMBER_OF_COLUMNS;
 import static hr.java.game.othello.othello.model.BoardState.NUMBER_OF_ROWS;
 
@@ -85,7 +88,6 @@ public class GameBoardUtils {
             } else if (Othello.player.name().equals(Player.BLACK_PLAYER.name())) {
                 MultiplayerGameUtil.blackPlayerSendRequest(boardState);
             }
-
             MultiplayerGameUtil.deactivateButtons(true);
         }
     }
@@ -101,6 +103,39 @@ public class GameBoardUtils {
             boardState.setCurrentPlayer(ButtonStyleEnum.WHITE);
         } else if (currentPlayerColor.equals(ButtonStyleEnum.WHITE)) {
             boardState.setCurrentPlayer(ButtonStyleEnum.BLACK);
+        }
+    }
+
+    public static void refreshChatArea(TextArea chatTextArea) {
+        List<String> chatHistory = null;
+        try {
+            chatHistory = stub.returnChatHistory();
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
+
+        StringBuilder sb = new StringBuilder();
+
+        for (String message : chatHistory) {
+            sb.append(message);
+            sb.append("\n");
+        }
+
+        chatTextArea.setText(sb.toString());
+    }
+
+    public static void sendChatMessage(TextField chatTextField, TextArea chatTextArea) {
+        if (!Othello.player.name().equals(Player.SINGLE_PLAYER.name())) {
+            String message = chatTextField.getText();
+            if (!message.isEmpty()) {
+                try {
+                    stub.sendMessage(Othello.player.name() + ": " + message);
+                    GameBoardUtils.refreshChatArea(chatTextArea);
+                } catch (RemoteException e) {
+                    throw new RuntimeException(e);
+                }
+                chatTextField.setText("");
+            }
         }
     }
 }

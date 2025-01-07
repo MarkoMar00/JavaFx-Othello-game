@@ -1,8 +1,24 @@
 package hr.java.game.othello.othello.util;
 
+import hr.java.game.othello.othello.Othello;
 import hr.java.game.othello.othello.OthelloController;
+import hr.java.game.othello.othello.chat.ChatService;
 import hr.java.game.othello.othello.enums.ButtonStyleEnum;
+import hr.java.game.othello.othello.enums.Player;
+import hr.java.game.othello.othello.jndi.ConfigurationReader;
+import hr.java.game.othello.othello.model.ConfigurationKey;
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextArea;
+import javafx.util.Duration;
+
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 
 import static hr.java.game.othello.othello.OthelloController.*;
 
@@ -81,5 +97,28 @@ public class GameSetup {
         board[7][5] = controller.getButton75();
         board[7][6] = controller.getButton76();
         board[7][7] = controller.getButton77();
+    }
+
+    public void initializeChat(TextArea chatTextArea) {
+        if(!Othello.player.name().equals(Player.SINGLE_PLAYER.name())) {
+            try {
+                String rmiPort = ConfigurationReader.getValue(ConfigurationKey.RMI_PORT);
+                String serverName = ConfigurationReader.getValue(ConfigurationKey.RMI_HOST);
+                Registry registry = LocateRegistry.getRegistry(serverName, Integer.parseInt(rmiPort));
+                stub = (ChatService) registry.lookup(ChatService.REMOTE_OBJECT_NAME);
+            } catch (RemoteException | NotBoundException e) {
+                throw new RuntimeException(e);
+            }
+
+            Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(2), e -> GameBoardUtils.refreshChatArea(chatTextArea)));
+            timeline.setCycleCount(Animation.INDEFINITE);
+            timeline.playFromStart();
+        }
+/*
+        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(5), e -> {
+            Platform.runLater(new GetLastGameMoveThread(lastGameMoveLabel));
+        }));
+        timeline.setCycleCount(Animation.INDEFINITE);
+        timeline.playFromStart();*/
     }
 }
