@@ -8,6 +8,7 @@ import hr.java.game.othello.othello.util.GameSetup;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import lombok.Getter;
@@ -148,6 +149,8 @@ public class OthelloController {
     private TextArea chatTextArea;
     @FXML
     private TextField chatMessageTextField;
+    @FXML
+    private Label lastMoveLabel;
 
     public static ButtonStyleEnum currentPlayerColor;
     public static Button[][] board;
@@ -157,6 +160,7 @@ public class OthelloController {
         GameSetup gameSetup = new GameSetup(this);
         gameSetup.initializeBoard();
         gameSetup.initializeChat(chatTextArea);
+        gameSetup.initializeLastMoveLabel(lastMoveLabel);
     }
 
     public void movePlayed(Event event) {

@@ -7,11 +7,13 @@ import hr.java.game.othello.othello.enums.ButtonStyleEnum;
 import hr.java.game.othello.othello.enums.Player;
 import hr.java.game.othello.othello.jndi.ConfigurationReader;
 import hr.java.game.othello.othello.model.ConfigurationKey;
+import hr.java.game.othello.othello.thread.ReadLastGameMoveThread;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.util.Duration;
 
@@ -114,11 +116,13 @@ public class GameSetup {
             timeline.setCycleCount(Animation.INDEFINITE);
             timeline.playFromStart();
         }
-/*
+    }
+
+    public void initializeLastMoveLabel(Label lastMoveLabel) {
         Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(5), e -> {
-            Platform.runLater(new GetLastGameMoveThread(lastGameMoveLabel));
+            Platform.runLater(new ReadLastGameMoveThread(lastMoveLabel));
         }));
         timeline.setCycleCount(Animation.INDEFINITE);
-        timeline.playFromStart();*/
+        timeline.playFromStart();
     }
 }

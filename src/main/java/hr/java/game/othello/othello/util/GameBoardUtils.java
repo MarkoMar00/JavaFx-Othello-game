@@ -4,6 +4,8 @@ import hr.java.game.othello.othello.Othello;
 import hr.java.game.othello.othello.enums.ButtonStyleEnum;
 import hr.java.game.othello.othello.enums.Player;
 import hr.java.game.othello.othello.model.BoardState;
+import hr.java.game.othello.othello.model.GameMove;
+import hr.java.game.othello.othello.thread.SaveGameMoveThread;
 import javafx.event.Event;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
@@ -11,6 +13,7 @@ import javafx.scene.control.TextField;
 
 import java.io.*;
 import java.rmi.RemoteException;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static hr.java.game.othello.othello.OthelloController.*;
@@ -70,6 +73,11 @@ public class GameBoardUtils {
                 for (int col = 0; col < NUMBER_OF_COLUMNS; col++){
                     if (board[row][col].equals(event.getSource())){
                         if (GameRules.checkIfLegalMove(currentPlayerColor, board, row, col)){
+                            GameMove newGameMove = new GameMove(currentPlayerColor, row, col, LocalDateTime.now());
+                            SaveGameMoveThread saveGameMoveThread = new SaveGameMoveThread(newGameMove);
+                            Thread starter = new Thread(saveGameMoveThread);
+                            starter.start();
+
                             GameRules.flipPieces(currentPlayerColor, row, col, board);
                             board[row][col].setStyle(currentPlayerColor.getStyle());
                             GameRules.isGameOver(board);
@@ -107,7 +115,7 @@ public class GameBoardUtils {
     }
 
     public static void refreshChatArea(TextArea chatTextArea) {
-        List<String> chatHistory = null;
+        List<String> chatHistory;
         try {
             chatHistory = stub.returnChatHistory();
         } catch (RemoteException e) {
