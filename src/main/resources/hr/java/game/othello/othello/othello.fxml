@@ -145,16 +145,12 @@
                     <MenuItem mnemonicParsing="false" onAction="#newGame" text="New Game" />
                         <MenuItem mnemonicParsing="false" onAction="#saveGame" text="Save Game" />
                         <MenuItem mnemonicParsing="false" onAction="#loadGame" text="Load Game" />
+                        <MenuItem mnemonicParsing="false" onAction="#replayGame" text="Replay Game" />
                   </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="Documentation">
                   <items>
                     <MenuItem mnemonicParsing="false" onAction="#generateDocumentation" text="Generate Documentation" />
-                  </items>
-                </Menu>
-                <Menu mnemonicParsing="false" text="Help">
-                  <items>
-                    <MenuItem mnemonicParsing="false" text="About" />
                   </items>
                 </Menu>
               </menus>

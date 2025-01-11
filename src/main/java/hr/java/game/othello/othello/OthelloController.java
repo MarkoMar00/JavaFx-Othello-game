@@ -13,8 +13,6 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import lombok.Getter;
 
-import java.rmi.RemoteException;
-
 @Getter
 public class OthelloController {
     @FXML
@@ -186,5 +184,9 @@ public class OthelloController {
 
     public void sendMessage() {
         GameBoardUtils.sendChatMessage(chatMessageTextField, chatTextArea);
+    }
+
+    public void replayGame() {
+        GameBoardUtils.replayGame(board);
     }
 }

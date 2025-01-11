@@ -4,6 +4,7 @@ module hr.java.game.othello.othello {
     requires static lombok;
     requires java.rmi;
     requires java.naming;
+    requires java.xml;
 
 
     opens hr.java.game.othello.othello to javafx.fxml;

@@ -6,15 +6,20 @@ import hr.java.game.othello.othello.enums.Player;
 import hr.java.game.othello.othello.model.BoardState;
 import hr.java.game.othello.othello.model.GameMove;
 import hr.java.game.othello.othello.thread.SaveGameMoveThread;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.event.Event;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.util.Duration;
 
 import java.io.*;
 import java.rmi.RemoteException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static hr.java.game.othello.othello.OthelloController.*;
 import static hr.java.game.othello.othello.model.BoardState.NUMBER_OF_COLUMNS;
@@ -22,6 +27,7 @@ import static hr.java.game.othello.othello.model.BoardState.NUMBER_OF_ROWS;
 
 
 public class GameBoardUtils {
+    private static List<Button[][]> listOfMoves = new ArrayList<>();
 
     public static void startNewGame(Button[][] board) {
         for (int i = 0; i < board.length; i++) {
@@ -80,7 +86,11 @@ public class GameBoardUtils {
 
                             GameRules.flipPieces(currentPlayerColor, row, col, board);
                             board[row][col].setStyle(currentPlayerColor.getStyle());
+
+                            listOfMoves.add(copyBoard(board));
+                            XmlUtils.saveGameMovesToXml(listOfMoves);
                             GameRules.isGameOver(board);
+
                             if (Othello.player.name().equals(Player.SINGLE_PLAYER.name())) {
                                 currentPlayerColor = (currentPlayerColor.getStyle().contains(ButtonStyleEnum.WHITE.getColor()))
                                         ? ButtonStyleEnum.BLACK : ButtonStyleEnum.WHITE;
@@ -114,6 +124,19 @@ public class GameBoardUtils {
         }
     }
 
+    private static Button[][] copyBoard(Button[][] board) {
+        Button[][] newBoard = new Button[NUMBER_OF_ROWS][NUMBER_OF_COLUMNS];
+        for (int row = 0; row < NUMBER_OF_ROWS; row++) {
+            for (int col = 0; col < NUMBER_OF_COLUMNS; col++) {
+                Button originalButton = board[row][col];
+                Button newButton = new Button(originalButton.getText());
+                newButton.setStyle(originalButton.getStyle());
+                newBoard[row][col] = newButton;
+            }
+        }
+        return newBoard;
+    }
+
     public static void refreshChatArea(TextArea chatTextArea) {
         List<String> chatHistory;
         try {
@@ -123,12 +146,10 @@ public class GameBoardUtils {
         }
 
         StringBuilder sb = new StringBuilder();
-
         for (String message : chatHistory) {
             sb.append(message);
             sb.append("\n");
         }
-
         chatTextArea.setText(sb.toString());
     }
 
@@ -145,5 +166,22 @@ public class GameBoardUtils {
                 chatTextField.setText("");
             }
         }
+    }
+
+    public static void replayGame(Button[][] board) {
+        List<Button[][]> gameMoves = XmlUtils.readGameMovesFromXml();
+        AtomicInteger i = new AtomicInteger(0);
+
+        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(2), e -> {
+            Button[][] gameMove = gameMoves.get(i.get());
+            for (int row = 0; row < NUMBER_OF_ROWS; row++) {
+                for (int col = 0; col < NUMBER_OF_COLUMNS; col++) {
+                    board[row][col].setStyle(gameMove[row][col].getStyle());
+                }
+            }
+            i.set(i.get() + 1);
+        }));
+        timeline.setCycleCount(gameMoves.size());
+        timeline.playFromStart();
     }
 }

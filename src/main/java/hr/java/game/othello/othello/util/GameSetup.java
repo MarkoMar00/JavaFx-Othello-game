@@ -22,7 +22,8 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 
-import static hr.java.game.othello.othello.OthelloController.*;
+import static hr.java.game.othello.othello.OthelloController.board;
+import static hr.java.game.othello.othello.OthelloController.stub;
 
 public class GameSetup {
     private OthelloController controller;
